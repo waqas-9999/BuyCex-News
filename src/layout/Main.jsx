@@ -7,10 +7,10 @@ import { IoIosArrowUp } from "react-icons/io";
 const Main = props => {
 
 	return (
-		<>				
-				<Navbar/>
-				{props.children}
-				<Footer/>
+		<>
+			<Navbar />
+			{props.children}
+			<Footer />
 		</>
 	);
 };
