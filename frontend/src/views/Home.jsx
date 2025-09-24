@@ -5,6 +5,7 @@ export default function Home() {
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [items, setItems] = useState([])
 
   // Get users from database
   async function fetchUsers() {
@@ -39,14 +40,21 @@ export default function Home() {
     }
   }
 
-  useEffect(async () => {
-    const fetchData = async() => {
-      const response = await fetch('http://localhost:5000/');
-      const data = response.json()
-      console.log(data);
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api");
+        const data = await response.json();
+        console.log("/api data", data);
+        setItems(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching:", error);
+      }
+    };
+
     fetchData();
   }, []);
+  
 
   return (
     <div className="p-6 flex flex-col items-center gap-6">
@@ -90,6 +98,9 @@ export default function Home() {
           ))}
         </tbody>
       </table>
+      {items.map( i => (
+        <p>{i.name}</p>
+      ))}
     </div>
   );
 }
