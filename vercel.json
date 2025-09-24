@@ -1,0 +1,14 @@
+{
+	"builds": [
+		{
+			"src": "frontend/package.json",
+			"use": "@vercel/static-build",
+			"config": { "distDir": "frontend/dist" }
+		}
+	],
+	"buildCommand": "npm --prefix frontend ci && npm --prefix frontend run build",
+	"outputDirectory": "frontend/dist",
+	"routes": [
+		{ "src": "/(.*)", "dest": "frontend/$1" }
+	]
+} 
