@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export default function AdminArticles() {
 	const [articles, setArticles] = useState([]);
-	const [form, setForm] = useState({ title: "", content: "", excerpt: "", category: "", tags: "", coverImageUrl: "", published: false });
+	const [form, setForm] = useState({ title: "", content: "", excerpt: "", category: "", tags: "", coverImageUrl: "", published: true });
 	const [loading, setLoading] = useState(false);
 
 	async function loadArticles() {

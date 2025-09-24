@@ -8,18 +8,20 @@ import ArticleModel from './models/article.js';
 const app = express();
 app.use(express.json());
 connectDB();
-const allowedOrigins = [
+
+const defaultOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://localhost:5173',
-  // Add your Vercel domain(s) below, e.g.:
-  'https://buycex-news.vercel.app',
 ];
+const envOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+const allowedOrigins = [...defaultOrigins, ...envOrigins];
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
     if (allowedOrigins.some((o) => origin.startsWith(o))) return callback(null, true);
-    return callback(null, true); // fallback: allow all
+    return callback(null, true);
   },
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
