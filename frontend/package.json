@@ -29,11 +29,9 @@
 		"web-vitals": "^1.0.1"
 	},
 	"scripts": {
-		"start": "node node_modules/vite/bin/vite.js",
-		"build": "node node_modules/vite/bin/vite.js build",
-		"test": "node node_modules/vite/bin/vite.js test",
-		"eject": "node node_modules/vite/bin/vite.js eject",
-		"serve": "node node_modules/vite/bin/vite.js preview"
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
 	},
 	"eslintConfig": {
 		"extends": [
