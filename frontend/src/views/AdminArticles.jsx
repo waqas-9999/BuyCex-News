@@ -7,7 +7,8 @@ export default function AdminArticles() {
 
 	async function loadArticles() {
 		try {
-			const res = await fetch("/api/articles");
+			const API_BASE = import.meta.env.VITE_API_BASE || '';
+			const res = await fetch(`${API_BASE}/api/articles`);
 			const data = await res.json();
 			setArticles(Array.isArray(data) ? data : []);
 		} catch (e) {
@@ -31,7 +32,8 @@ export default function AdminArticles() {
 					.filter(Boolean),
 				published: Boolean(form.published),
 			};
-			const res = await fetch("/api/articles", {
+			const API_BASE = import.meta.env.VITE_API_BASE || '';
+			const res = await fetch(`${API_BASE}/api/articles`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload),

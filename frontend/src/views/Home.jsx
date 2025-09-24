@@ -7,7 +7,8 @@ export default function Home() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch('/api/articles?published=true');
+                 const API_BASE = import.meta.env.VITE_API_BASE || '';
+         const res = await fetch(`${API_BASE}/api/articles?published=true`);
         const data = await res.json();
         setArticles(Array.isArray(data) ? data : []);
       } catch (e) {
