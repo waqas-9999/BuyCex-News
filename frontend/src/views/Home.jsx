@@ -1,38 +1,86 @@
-import { useState,useEffect } from "react";
-import Hero from "../components/Home/Hero";
+import { useState, useEffect } from "react";
+import { supabase } from "../createClient";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
 
-  const getUsers = () => {
-    fetch('/api/users')
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setUsers(data);
-      })
-      .catch((err) => console.error('Error fetching users:', err));
-  };
+  // Get users from database
+  async function fetchUsers() {
+    const { data, error } = await supabase.from("users").select("*");
+    if (!error) {
+      setUsers(data || []);
+    }
+  }
 
+  // Load users when page starts
   useEffect(() => {
-    getUsers();
+    fetchUsers();
   }, []);
 
+  // Add new user
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!name || !age) return alert("Please enter both name and age");
+
+    const { data, error } = await supabase
+      .from("users")
+      .insert([{ name, age: Number(age) }])
+      .select();
+
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      setUsers([data[0], ...users]); // Add new user to list
+      setName("");
+      setAge("");
+    }
+  }
+
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-y-20 min-h-[100vh] ">
-      <Hero />
-      <div className="mt-10 w-full max-w-3xl">
-        <h2 className="text-2xl font-bold mb-4">Users</h2>
-        <ul className="space-y-2">
-          {users.map((user) => (
-            <li key={user.id} className="p-4 grid grid-cols-3 border rounded-md shadow-sm">
-              <p className="font-semibold">{user.name}</p>
-              <p className="text-sm text-gray-600">{user.email}</p>
-              <p className="text-sm">{user.company.name}</p>
-            </li>
+    <div className="p-6 flex flex-col items-center gap-6">
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="border px-2 py-1 rounded"
+        />
+        <input
+          type="number"
+          placeholder="Age"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          className="border px-2 py-1 rounded"
+        />
+        <button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded">
+          Add User
+        </button>
+      </form>
+
+      {/* Users Table */}
+      <table className="border-collapse border border-gray-400 w-full max-w-lg">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border px-3 py-1">ID</th>
+            <th className="border px-3 py-1">Name</th>
+            <th className="border px-3 py-1">Age</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((u) => (
+            <tr key={u.id}>
+              <td className="border px-3 py-1">{u.id}</td>
+              <td className="border px-3 py-1">{u.name}</td>
+              <td className="border px-3 py-1">{u.age}</td>
+            </tr>
           ))}
-        </ul>
-      </div>
+        </tbody>
+      </table>
     </div>
   );
 }
