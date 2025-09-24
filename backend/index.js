@@ -1,15 +1,25 @@
 import express from 'express';
 import cors from "cors";
 import users from './users.js';
+import connectDB from './db.js';
+import ItemModel from './models/item.js';
 
 const app = express();
+app.use(express.json());
+connectDB();
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Server is ready!');
+app.get('/', async (req, res) => {
+  try {
+    const items = await ItemModel.find();
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch items' });
+  }
 });
 
-app.get('/api/users', (req, res) => {
+app.get('/api/users', async (req, res) => {
+  const items = await ItemModel.find()
   res.send(users);
 });
 

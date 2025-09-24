@@ -39,6 +39,15 @@ export default function Home() {
     }
   }
 
+  useEffect(async () => {
+    const fetchData = async() => {
+      const response = await fetch('http://localhost:5000/');
+      const data = response.json()
+      console.log(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="p-6 flex flex-col items-center gap-6">
       {/* Form */}
