@@ -2,8 +2,8 @@
     "buildCommand": "npm install --include=dev --prefix frontend && npm run build --prefix frontend",
     "outputDirectory": "frontend/dist",
     "rewrites": [
-		{ "source": "/api/(.*)", "destination": "https://buycex-news.vercel.app/api/articles" },
-		{ "source": "/(.*)", "destination": "/index.html" }
-	]
+      { "source": "/api/(.*)", "destination": "/api/$1" },
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
   }
   
