@@ -1,5 +1,6 @@
 import Home from '../views/Home';
 import AdminArticles from '../views/AdminArticles';
+import AnalyticsDashboard from '../views/AnalyticsDashboard';
 
 
 let routes = [
@@ -12,6 +13,11 @@ let routes = [
 	{
 		path: '/admin/articles',
 		component: AdminArticles,
+		layout: 'main',
+	},
+	{
+		path: '/admin/analytics',
+		component: AnalyticsDashboard,
 		layout: 'main',
 	},
 	

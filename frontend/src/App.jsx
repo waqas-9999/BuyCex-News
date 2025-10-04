@@ -2,6 +2,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Auth from "./layout/Auth";
 import Main from "./layout/Main";
 import routes from "./routes";
+import "./services/visitorTracker"; // Initialize visitor tracking
 
 function App() {
     return (
