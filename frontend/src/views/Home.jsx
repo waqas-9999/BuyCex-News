@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import MarketData from "../components/Home/MarketPrice";
 import MarketSlider from "../components/Home/MarketSlider";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
@@ -15,11 +16,9 @@ export default function Home() {
         const res = await fetch(url);
         const data = await res.json();
         
-        // Handle new API response format
         const articlesArray = data.articles ? data.articles : (Array.isArray(data) ? data : []);
         setArticles(articlesArray);
         
-        // Set the first article as featured
         if (articlesArray.length > 0) {
           setFeaturedArticle(articlesArray[0]);
         }
@@ -32,9 +31,8 @@ export default function Home() {
     load();
   }, []);
 
-  // Group articles by category (excluding featured article)
   const articlesByCategory = articles.reduce((acc, article) => {
-    if (article._id === featuredArticle?._id) return acc; // Skip featured article
+    if (article._id === featuredArticle?._id) return acc;
     
     const cat = article.category || 'General';
     if (!acc[cat]) acc[cat] = [];
@@ -109,9 +107,12 @@ export default function Home() {
                 )}
               </div>
               
-              <button className="bg-[#efb81c] hover:bg-[#f8d675] text-black font-semibold px-6 py-3 rounded-lg transition-colors">
+              <Link
+                to={featuredArticle.slug ? `/article/${featuredArticle.slug}` : "#"}
+                className="bg-[#efb81c] hover:bg-[#f8d675] text-black font-semibold px-6 py-3 rounded-lg transition-colors inline-block"
+              >
                 Read Full Article
-              </button>
+              </Link>
             </div>
             
             {/* Featured Article Image */}
@@ -162,7 +163,8 @@ export default function Home() {
                 {/* Articles Grid - Uniform Card Sizes */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {articlesByCategory[category].map((article) => (
-                    <article 
+                    <Link
+                      to={article.slug ? `/article/${article.slug}` : "#"}
                       key={article._id}
                       className="bg-gray-900/50 rounded-lg border border-gray-800 hover:border-[#efb81c]/30 transition-all duration-300 hover:transform hover:-translate-y-1 group"
                     >
@@ -211,7 +213,7 @@ export default function Home() {
                           </span>
                         </div>
                       </div>
-                    </article>
+                    </Link>
                   ))}
                 </div>
               </section>
